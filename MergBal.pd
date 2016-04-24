@@ -1,0 +1,315 @@
+#N canvas 313 25 680 607 10;
+#X obj 35 485 dac~;
+#X obj 34 449 *~;
+#X obj 559 432 line~;
+#X obj 559 410 pack 0 10;
+#X obj 559 255 vsl 65 128 0 1 0 1 empty empty Styrkur 0 -9 0 10 -24198
+-1 -1 0 1;
+#X floatatom 559 391 5 0 0 0 - - -;
+#X obj 5 8 cnv 15 666 77 empty empty empty 20 12 0 14 -258699 -66577
+0;
+#X obj 239 215 vsl 65 128 0 100 0 1 empty empty VitaHringur 0 -9 0
+10 -62784 -1 -1 7500 1;
+#X obj 36 110 adc~;
+#N canvas 485 128 279 236 frumstilling 0;
+#X obj 76 61 loadbang;
+#X msg 76 122 \; pd dsp 1;
+#X connect 0 0 1 0;
+#X restore 563 97 pd frumstilling;
+#N canvas 537 253 326 339 styrk 0;
+#X obj 41 21 inlet~;
+#X obj 42 72 env~ 8094;
+#X floatatom 42 103 5 0 0 0 - - -;
+#X obj 42 130 - 100;
+#X floatatom 42 169 5 0 0 0 - - -;
+#X obj 109 128 vu 15 120 empty empty -1 -8 0 8 -66577 -1 1 0;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X coords 0 -1 1 1 55 155 1 100 100;
+#X restore 63 158 pd styrk;
+#X floatatom 239 363 5 0 0 0 - - -;
+#X obj 8 523 cnv 15 666 77 empty empty empty 20 12 0 14 -258699 -66577
+0;
+#X text 382 581 (cc) Aki Asgeirsson 2008 - aki@slatur.is;
+#X text 478 546 Toelvutonlist med PureData;
+#X text 575 530 GarnaFlaekja;
+#X text 42 536 G;
+#X text 34 539 G;
+#X text 51 536 G;
+#X text 59 539 G;
+#X text 31 546 G;
+#X text 30 554 G;
+#X text 30 563 G;
+#X text 34 572 G;
+#X text 48 576 G;
+#X text 41 575 G;
+#X text 56 576 G;
+#X text 56 567 G;
+#X text 66 559 G;
+#X text 57 559 G;
+#X text 49 559 G;
+#X text 284 564 nidurhal: slatur.is -> gagnasafn -> pd -> garnaflaekja
+;
+#X text 16 47 sfdsdfsadf;
+#X text 16 17 MergBal og BergMal;
+#N canvas 23 34 958 610 reverb 0;
+#X obj 13 19 inlet~;
+#X obj 277 215 +~;
+#X obj 319 215 +~;
+#X obj 67 276 outlet~;
+#X obj 137 276 outlet~;
+#X obj 238 334 +~;
+#X obj 347 335 +~;
+#X obj 280 334 -~;
+#X obj 387 334 -~;
+#X obj 237 390 +~;
+#X obj 281 391 +~;
+#X obj 325 392 -~;
+#X obj 364 392 -~;
+#X obj 324 474 *~ 0;
+#X obj 282 473 *~ 0;
+#X obj 237 472 *~ 0;
+#X obj 365 475 *~ 0;
+#X obj 632 365 inlet;
+#X obj 632 437 / 200;
+#X obj 632 389 min 100;
+#X obj 632 412 max 0;
+#X obj 238 583 delwrite~ loop-del1 60;
+#X obj 283 561 delwrite~ loop-del2 71.9345;
+#X obj 364 515 delwrite~ loop-del4 95.945;
+#X obj 298 154 delread~ loop-del1 60;
+#X obj 340 179 delread~ loop-del2 71.9345;
+#X obj 408 233 delread~ loop-del4 95.945;
+#X obj 386 208 delread~ loop-del3 86.7545;
+#X obj 325 538 delwrite~ loop-del3 86.7545;
+#X text 286 42 "early echo" generators \, which also increase echo
+density. Open one to see what they do.;
+#X text 300 115 Get the outputs of the recirculating delays. Add the
+inputs to two of them.;
+#X text 420 313 Do a power-conserving mix of them in pairs. First combine
+(1 \, 2) and (3 \, 4)...;
+#X text 402 385 ...then (1 \, 3) and (2 \, 4);
+#X text 446 469 The two mixing stages have a combined gain of 2 \,
+so the recirculation gain is limited to 0.5.;
+#X text 586 542 Put the signals back into the;
+#X text 584 557 recirculating delays.;
+#X text 29 296 Tap outputs from here.;
+#X text 708 381 0 to 100 to control reverb;
+#X text 719 396 time.;
+#X text 691 364 feedback gain on a scale of;
+#N canvas 398 201 450 300 reverb-echo 0;
+#X obj 66 95 inlet~;
+#X obj 130 96 inlet~;
+#X obj 68 216 outlet~;
+#X obj 141 215 outlet~;
+#X obj 67 143 +~;
+#X obj 140 141 -~;
+#X text 48 14 This appears as an abstraction in patch G08.reverb.pd
+;
+#X text 27 267 This network makes two copies of the (stereo) input
+\, one in phase \, the other out of phase and delayed. The total frequency
+response is flat. The total signal power out is exactly twice that
+of the input \, no matter what freqiencies the input contains. This
+is used to increase echo density \, by stacking several of these units
+with different delay times. Each stage doubles the echo density.;
+#X obj 140 191 delread~ ed2 8.45346;
+#X obj 141 165 delwrite~ ed2 8.45346;
+#X connect 0 0 4 0;
+#X connect 0 0 5 0;
+#X connect 1 0 4 1;
+#X connect 1 0 5 1;
+#X connect 4 0 2 0;
+#X connect 5 0 9 0;
+#X connect 8 0 3 0;
+#X restore 13 67 pd reverb-echo echo-del2 8.45346;
+#N canvas 376 280 450 300 reverb-echo 0;
+#X obj 66 95 inlet~;
+#X obj 130 96 inlet~;
+#X obj 68 216 outlet~;
+#X obj 141 215 outlet~;
+#X obj 67 143 +~;
+#X obj 140 141 -~;
+#X text 48 14 This appears as an abstraction in patch G08.reverb.pd
+;
+#X text 27 267 This network makes two copies of the (stereo) input
+\, one in phase \, the other out of phase and delayed. The total frequency
+response is flat. The total signal power out is exactly twice that
+of the input \, no matter what freqiencies the input contains. This
+is used to increase echo density \, by stacking several of these units
+with different delay times. Each stage doubles the echo density.;
+#X obj 141 165 delwrite~ ed3 13.4367;
+#X obj 140 191 delread~ ed3 13.4367;
+#X connect 0 0 4 0;
+#X connect 0 0 5 0;
+#X connect 1 0 4 1;
+#X connect 1 0 5 1;
+#X connect 4 0 2 0;
+#X connect 5 0 8 0;
+#X connect 9 0 3 0;
+#X restore 13 91 pd reverb-echo echo-del3 13.4367;
+#N canvas 446 251 450 300 reverb-echo 0;
+#X obj 66 95 inlet~;
+#X obj 130 96 inlet~;
+#X obj 68 216 outlet~;
+#X obj 141 215 outlet~;
+#X obj 67 143 +~;
+#X obj 140 141 -~;
+#X text 48 14 This appears as an abstraction in patch G08.reverb.pd
+;
+#X text 27 267 This network makes two copies of the (stereo) input
+\, one in phase \, the other out of phase and delayed. The total frequency
+response is flat. The total signal power out is exactly twice that
+of the input \, no matter what freqiencies the input contains. This
+is used to increase echo density \, by stacking several of these units
+with different delay times. Each stage doubles the echo density.;
+#X obj 141 165 delwrite~ ed4 21.5463;
+#X obj 140 191 delread~ ed4 21.5463;
+#X connect 0 0 4 0;
+#X connect 0 0 5 0;
+#X connect 1 0 4 1;
+#X connect 1 0 5 1;
+#X connect 4 0 2 0;
+#X connect 5 0 8 0;
+#X connect 9 0 3 0;
+#X restore 13 115 pd reverb-echo echo-del4 21.5463;
+#N canvas 359 275 450 300 reverb-echo 0;
+#X obj 66 95 inlet~;
+#X obj 130 96 inlet~;
+#X obj 68 216 outlet~;
+#X obj 141 215 outlet~;
+#X obj 67 143 +~;
+#X obj 140 141 -~;
+#X text 48 14 This appears as an abstraction in patch G08.reverb.pd
+;
+#X text 27 267 This network makes two copies of the (stereo) input
+\, one in phase \, the other out of phase and delayed. The total frequency
+response is flat. The total signal power out is exactly twice that
+of the input \, no matter what freqiencies the input contains. This
+is used to increase echo density \, by stacking several of these units
+with different delay times. Each stage doubles the echo density.;
+#X obj 141 165 delwrite~ ed5 34.3876;
+#X obj 140 191 delread~ ed5 34.3876;
+#X connect 0 0 4 0;
+#X connect 0 0 5 0;
+#X connect 1 0 4 1;
+#X connect 1 0 5 1;
+#X connect 4 0 2 0;
+#X connect 5 0 8 0;
+#X connect 9 0 3 0;
+#X restore 13 139 pd reverb-echo echo-del5 34.3876;
+#N canvas 447 339 450 300 reverb-echo 0;
+#X obj 67 95 inlet~;
+#X obj 131 96 inlet~;
+#X obj 69 216 outlet~;
+#X obj 142 215 outlet~;
+#X obj 68 143 +~;
+#X obj 141 141 -~;
+#X text 49 14 This appears as an abstraction in patch G08.reverb.pd
+;
+#X text 28 267 This network makes two copies of the (stereo) input
+\, one in phase \, the other out of phase and delayed. The total frequency
+response is flat. The total signal power out is exactly twice that
+of the input \, no matter what freqiencies the input contains. This
+is used to increase echo density \, by stacking several of these units
+with different delay times. Each stage doubles the echo density.;
+#X obj 142 165 delwrite~ ed6 55.5437;
+#X obj 141 191 delread~ ed6 55.5437;
+#X connect 0 0 4 0;
+#X connect 0 0 5 0;
+#X connect 1 0 4 1;
+#X connect 1 0 5 1;
+#X connect 4 0 2 0;
+#X connect 5 0 8 0;
+#X connect 9 0 3 0;
+#X restore 13 163 pd reverb-echo echo-del6 55.5437;
+#N canvas 322 174 498 335 reverb-echo 0;
+#X obj 66 95 inlet~;
+#X obj 130 96 inlet~;
+#X obj 68 216 outlet~;
+#X obj 141 215 outlet~;
+#X obj 67 143 +~;
+#X obj 140 141 -~;
+#X text 48 14 This appears as an abstraction in patch G08.reverb.pd
+;
+#X text 27 267 This network makes two copies of the (stereo) input
+\, one in phase \, the other out of phase and delayed. The total frequency
+response is flat. The total signal power out is exactly twice that
+of the input \, no matter what freqiencies the input contains. This
+is used to increase echo density \, by stacking several of these units
+with different delay times. Each stage doubles the echo density.;
+#X obj 141 165 delwrite~ ed1 5.43216;
+#X obj 140 191 delread~ ed1 5.43216;
+#X connect 0 0 4 0;
+#X connect 0 0 5 0;
+#X connect 1 0 4 1;
+#X connect 1 0 5 1;
+#X connect 4 0 2 0;
+#X connect 5 0 8 0;
+#X connect 9 0 3 0;
+#X restore 13 43 pd reverb-echo echo-del1 5.43216;
+#X connect 0 0 45 0;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 1 0 7 0;
+#X connect 2 0 4 0;
+#X connect 2 0 5 1;
+#X connect 2 0 7 1;
+#X connect 5 0 9 0;
+#X connect 5 0 11 0;
+#X connect 6 0 11 1;
+#X connect 6 0 9 1;
+#X connect 7 0 10 0;
+#X connect 7 0 12 0;
+#X connect 8 0 10 1;
+#X connect 8 0 12 1;
+#X connect 9 0 15 0;
+#X connect 10 0 14 0;
+#X connect 11 0 13 0;
+#X connect 12 0 16 0;
+#X connect 13 0 28 0;
+#X connect 14 0 22 0;
+#X connect 15 0 21 0;
+#X connect 16 0 23 0;
+#X connect 17 0 19 0;
+#X connect 18 0 16 1;
+#X connect 18 0 15 1;
+#X connect 18 0 14 1;
+#X connect 18 0 13 1;
+#X connect 19 0 20 0;
+#X connect 20 0 18 0;
+#X connect 24 0 1 1;
+#X connect 25 0 2 1;
+#X connect 26 0 6 1;
+#X connect 26 0 8 1;
+#X connect 27 0 6 0;
+#X connect 27 0 8 0;
+#X connect 40 0 41 0;
+#X connect 40 1 41 1;
+#X connect 41 0 42 0;
+#X connect 41 1 42 1;
+#X connect 42 0 43 0;
+#X connect 42 1 43 1;
+#X connect 43 0 44 0;
+#X connect 43 1 44 1;
+#X connect 44 0 1 0;
+#X connect 44 1 2 0;
+#X connect 45 0 40 0;
+#X connect 45 1 40 1;
+#X restore 35 377 pd reverb;
+#X obj 92 448 *~;
+#X connect 1 0 0 0;
+#X connect 2 0 1 1;
+#X connect 2 0 35 1;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 7 0 11 0;
+#X connect 8 0 10 0;
+#X connect 8 0 34 0;
+#X connect 11 0 34 1;
+#X connect 34 0 1 0;
+#X connect 34 1 35 0;
+#X connect 35 0 0 1;
